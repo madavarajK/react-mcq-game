@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Question from './Question';
+import Score from './Score';
+import questions from './questions'; // Assuming you have a questions.js file with your questions
 
 function App() {
+  const [score, setScore] = useState(0);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Switch>
+          {questions.map((question, index) => (
+            <Route key={index} path={`/question/${index}`}>
+              <Question 
+                question={question} 
+                index={index} 
+                totalQuestions={questions.length} 
+                setScore={setScore} 
+                score={score} 
+              />
+            </Route>
+          ))}
+          <Route path="/score">
+            <Score score={score} />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
